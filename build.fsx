@@ -11,18 +11,15 @@ let publishDir = artifactsDir + "/publish/"
 let testDlls = testDir + "*.Tests.dll"
 
 let appProjects = "src/app/**/project.json"
-let contribProjects = "src/contrib/**/project.json"
 let testProjects = "src/test/**/project.json"
 let publishProjects = 
     [
-        "Confifu.Abstractions", "src/app/Confifu.Abstractions"
         "Confifu.Abstractions.DependencyInjection", "src/app/Confifu.Abstractions.DependencyInjection"
-        "Confifu.LibraryConfig", "src/app/Confifu.LibraryConfig"
-        "Confifu", "src/app/Confifu"
     ]
 let restoreDir = "src"
 // Arguments
 let version = getBuildParamOrDefault "version" "0"
+
 
 // functions
 
@@ -62,6 +59,16 @@ let packProject(project: string, versionSuffix: Option<string>) =
                         | None -> ""
         })
 
+
+let publish() =
+    tracefn "publishing..."
+    Paket.Push(fun p ->
+        {
+            p with
+                    ApiKey = environVarOrFail "NUGET_API_KEY"
+                    WorkingDir = publishDir
+        })
+
 // Targets
 Target "Clean" (fun _ -> 
     CleanDir artifactsDir
@@ -76,7 +83,7 @@ Target "Restore" (fun _ ->
 )
 
 Target "Build" (fun _ -> 
-    !! appProjects ++ contribProjects
+    !! appProjects
         |> Seq.iter (fun projects -> 
             DotNetCli.Build(fun p ->
             { p with 
@@ -113,18 +120,12 @@ Target "Pack-Pre" (fun _ ->
         ) 
 )
 
-Target "Publish" (fun _ -> 
-    publishProjects
-        |> Seq.iter(fun (project, projectPath) -> 
-            NuGet(fun p ->
-            {
-                p with
-                    AccessKey = environVarOrFail "NUGET_API_KEY"
-                    Publish = true
-            }) 
-            |> ignore
-        )
-    
+Target "Publish-Release" (fun _ ->
+    publish()    
+)
+
+Target "Publish-Pre" (fun _ ->
+    publish()    
 )
 //
 //Target "Publish-Tags" (fun _ ->
@@ -138,5 +139,17 @@ Target "Default" <| DoNothing
     ==> "Build"
     ==> "Default"
 
+"Clean"
+    ==> "Pack-Pre"
+
+"Clean"
+    ==> "Pack"
+
+"Pack"
+    ==> "Publish-Release"
+
+"Pack-Pre"
+    ==> "Publish-Pre"
+
 // start build
-RunTargetOrDefault "Default"
+RunTargetOrDefault "Watch"

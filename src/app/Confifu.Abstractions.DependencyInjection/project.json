@@ -9,7 +9,7 @@
 
 
   "dependencies": {
-    "Confifu.Abstractions": { "target": "project" },
+    "Confifu.Abstractions": "2.0.0-preview1",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1"
   },
