@@ -33,6 +33,25 @@ namespace Confifu.Abstractions.DependencyInjection
         }
 
         /// <summary>
+        /// Get or Create ServiceCollection from <para>appConfig</para> using ServiceCollection predefined key
+        /// </summary>
+        /// <param name="appConfig">IAppConfig instance</param>
+        /// <returns>IServiceCollection instance</returns>
+        public static IServiceCollection EnsureServiceCollection(this IAppConfig appConfig)
+        {
+            if (appConfig == null) throw new ArgumentNullException(nameof(appConfig));
+
+            var serviceCollection = appConfig.Get<IServiceCollection>(ServiceCollectionKey);
+            if(serviceCollection == null)
+            {
+                serviceCollection = new ServiceCollection();
+                appConfig.SetServiceCollection(serviceCollection);
+            }
+            return serviceCollection;
+        }
+
+
+        /// <summary>
         /// Set ServiceCollection to <para>appConfig</para> using ServiceCollection predefined key
         /// </summary>
         /// <param name="appConfig">IAppConfig instance</param>
@@ -82,7 +101,7 @@ namespace Confifu.Abstractions.DependencyInjection
             if (appConfig == null) throw new ArgumentNullException(nameof(appConfig));
             if (action == null) throw new ArgumentNullException(nameof(action));
             
-            var serviceCollection = appConfig.GetServiceCollection();
+            var serviceCollection = appConfig.EnsureServiceCollection();
             action(serviceCollection);
             return appConfig;
         }
