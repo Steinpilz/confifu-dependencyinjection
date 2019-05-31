@@ -4,17 +4,16 @@
     <Description>Confifu is centralized configuration for the .NET platform, inspired by application config in Ruby on Rails</Description>
     <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>steinpilz;ivan.benko</Authors>
-    <TargetFrameworks>netstandard1.0;net451</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Confifu.Abstractions.DependencyInjection</AssemblyName>
     <PackageId>Confifu.Abstractions.DependencyInjection</PackageId>
     <PackageTags>confifu;configuration;.net</PackageTags>
-    <PackageProjectUrl>https://github.com/steinpilz/confifu</PackageProjectUrl>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <PackageProjectUrl>https://github.com/steinpilz/confifu-dependencyinjection</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confifu.Abstractions" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Confifu.Abstractions" Version="2.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
