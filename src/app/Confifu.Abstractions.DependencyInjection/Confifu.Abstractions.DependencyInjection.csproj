@@ -9,6 +9,7 @@
     <PackageId>Confifu.Abstractions.DependencyInjection</PackageId>
     <PackageTags>confifu;configuration;.net</PackageTags>
     <PackageProjectUrl>https://github.com/steinpilz/confifu-dependencyinjection</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
